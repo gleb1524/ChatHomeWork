@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.PasswordField?>
+<VBox xmlns:fx="http://javafx.com/fxml" stylesheets="/Style.css"
+      fx:controller="Client">
+    <padding>
+        <Insets bottom="2.0" left="0.5" right="0.5" top="2.0"/>
+    </padding>
+    <HBox>
+        <MenuBar VBox.vgrow="NEVER" HBox.hgrow="ALWAYS">
+            <Menu text="File">
+                <MenuItem text="Open"/>
+                <MenuItem text="Edit"/>
+                <MenuItem text="Close" onAction="#pressToClose"/>
+            </Menu>
+        </MenuBar>
+    </HBox>
+    <HBox>
+        <HBox fx:id="authBar" VBox.vgrow="NEVER">
+            <TextField fx:id="textFieldLogin" promptText="Login" HBox.hgrow="ALWAYS"/>
+            <PasswordField fx:id="textFieldPassword" promptText="password" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="login" text="SigIn" HBox.hgrow="ALWAYS" onAction="#pressToAuth"/>
+        </HBox>
+
+
+    </HBox>
+    <HBox VBox.vgrow="ALWAYS">
+        <TextArea fx:id="textArea" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" editable="false"/>
+    </HBox>
+    <HBox fx:id="sendMessageBar" VBox.vgrow="NEVER">
+        <TextField fx:id="textField" HBox.hgrow="ALWAYS" onAction="#enterBtn"/>
+        <Button text="enter" onAction="#enterBtn"/>
+    </HBox>
+
+
+</VBox>
