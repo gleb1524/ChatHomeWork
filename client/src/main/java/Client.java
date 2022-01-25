@@ -25,6 +25,7 @@ public class Client implements Initializable {
     private boolean authenticated;
     private String nickname;
     private Stage stage;
+    private int authTime = 0;
     @FXML
     public javafx.scene.control.TextArea textArea;
     @FXML
@@ -79,7 +80,7 @@ public class Client implements Initializable {
         if(socket == null || socket.isClosed()){
             connect();
         }
-
+        authTime();
         try{
             String str = String.format("/auth %s %s",
                     textFieldLogin.getText().trim(), textFieldPassword.getText().trim());
@@ -100,7 +101,7 @@ public class Client implements Initializable {
             /* Thread inputStream =*/
             new Thread(() -> {
                 try {
-                    while (true) {
+                    while (!authenticated) {
                     //цикл аутентификации
                         String str = in.readUTF();
 
@@ -135,11 +136,8 @@ public class Client implements Initializable {
                     e.printStackTrace();
                 } finally {
                     try {
+                        out.writeUTF("/end");
                         socket.close();
-                        Platform.runLater(() -> {
-                            Stage scene = (Stage) textField.getScene().getWindow();
-                            scene.close();
-                        });
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -174,5 +172,28 @@ public class Client implements Initializable {
         Platform.runLater(() -> {
             stage.setTitle(title);
         });
+    }
+    private void authTime(){
+        authTime=0;
+
+        new Thread(() -> {
+            while (!authenticated){
+                try {
+                    Thread.sleep(1000);
+                    authTime++;
+                    System.out.println(authTime);
+                    if(authTime>=120){
+                        if(socket != null && !socket.isClosed()) {
+                            out.writeUTF("/end");
+                            socket.close();
+                        }
+                        return;
+                    }
+
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }
